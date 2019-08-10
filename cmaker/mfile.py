@@ -1,10 +1,6 @@
 import os
 import time
 
-
-REST_DT = 0.01
-
-
 class MFile:
     
     @staticmethod
@@ -12,6 +8,11 @@ class MFile:
         mfile = MFile(fpath)
         mfile.update()
         return mfile
+    
+    def __init__(self, fpath):
+        self.fpath = fpath
+        self.exists = False
+        self.mtime = None
     
     def parse(self):
         with open(self.fpath, "r") as f:
@@ -23,11 +24,6 @@ class MFile:
             os.remove(self.fpath)
             self.exists = False
             self.mtime = None
-    
-    def __init__(self, fpath):
-        self.fpath = fpath
-        self.exists = False
-        self.mtime = None
     
     def __hash__(self):
         return hash(self.fpath)
@@ -43,10 +39,13 @@ class MFile:
         updated = False
         if self.exists:
             new_mtime = os.path.getmtime(self.fpath)
-            updated = new_mtime > self.mtime
+            updated = self.mtime is None or new_mtime > self.mtime
             self.mtime = new_mtime
         return updated
     
-    def await_update(self):
-        while not self.update():
-            time.sleep(REST_DT)
+    def await_update(self, tries=10, rest_dt=0.01):
+        for i in range(tries):
+            if self.update():
+                break
+            else:
+                time.sleep(rest_dt)

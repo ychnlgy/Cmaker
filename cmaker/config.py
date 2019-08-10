@@ -12,13 +12,11 @@ class Config:
     
     def __init__(
         self,
-        c_ext,
-        obj_dirsep,
-        obj_dir,
-        compile_args,
-        compile_cmd,
-        combine_args,
-        combine_cmd
+        c_ext=".cpp",
+        obj_dirsep=".",
+        obj_dir="dump",
+        compile_cmd="g++ -MMD -c {inp} -o {out}",
+        combine_cmd="g++ -MMD -c {inp} -o {out}"
     ):
         self.c_ext = c_ext
         self.obj_dirsep = obj_dirsep
