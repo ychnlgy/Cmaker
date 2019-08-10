@@ -7,16 +7,15 @@ class DFile:
         head = next(fit)
         target, all_deps = head.split(": ")
         all_deps = _clean(all_deps)
-        src = all_deps[0]
-        h_deps = all_deps[1:]
         for subs in map(_clean, fit):
-            h_deps.extend(subs)
+            all_deps.extend(subs)
+        
+        all_deps = list(filter(None, all_deps))
         
         target = fcentral[target]
-        src = fcentral[src]
-        h_deps = [
-            fcentral[h_dep]
-            for h_dep in filter(None, h_deps)
+        src = fcentral[all_deps[0]]
+        h_deps = [fcentral[all_deps[i]]
+            for i in range(1, len(all_deps))
         ]
         return DFile(mfile, target, src, h_deps)
     
@@ -25,6 +24,14 @@ class DFile:
         self.target = target
         self.src = src
         self.h_deps = h_deps
+    
+    def recipe(self):
+        tar = self.target.fpath
+        src = self.src.fpath
+        hed = " ".join([
+            h.fpath for h in self.h_deps
+        ])
+        return "%s: %s %s" % (tar, src, hed)
     
     def should_compile(self):
         

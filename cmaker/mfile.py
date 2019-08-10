@@ -43,9 +43,11 @@ class MFile:
             self.mtime = new_mtime
         return updated
     
-    def await_update(self, tries=10, rest_dt=0.01):
+    def await_update(self, tries=600000, rest_dt=0.01):
+        "Wait up to a default of 10 minutes while checking for update."
         for i in range(tries):
             if self.update():
-                break
+                return
             else:
                 time.sleep(rest_dt)
+        raise TimeoutError("Waited %.2f s." % (tries * rest_dt))

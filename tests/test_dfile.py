@@ -5,7 +5,8 @@ import pytest
 from cmaker.dfile import DFile
 from cmaker.fcentral import FCentral
 
-DIR = os.path.dirname(__file__)
+DIR = "tests"
+HARD_D = os.path.join(DIR, "mock", "hard.d")
 PROJ1 = os.path.join(DIR, "mock", "project1")
 MAIN_D = os.path.join(PROJ1, "main.d")
 MAIN_O = os.path.join(PROJ1, "main.o")
@@ -51,3 +52,13 @@ def test_newheader(fcentral):
     mfile = fcentral[NEWHEAD_D]
     dfile = DFile.parse(fcentral, mfile)
     assert dfile.should_compile()
+
+def test_shorthead(fcentral):
+    mfile = fcentral[HARD_D]
+    dfile = DFile.parse(fcentral, mfile)
+    assert (
+        dfile.recipe() == \
+        "dump/mock.project2.src.h.h1.o:"
+        " mock/project2/src/h/h1.cpp"
+        " mock/project2/src/h/h1.h"
+    )

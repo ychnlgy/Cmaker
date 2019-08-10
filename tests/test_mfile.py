@@ -68,3 +68,7 @@ def test_update(tempfile):
     
     oldf = MFile.create(HELLO_CPP)
     assert oldf < tempfile
+
+def test_overwait(tempfile):
+    with pytest.raises(TimeoutError):
+        tempfile.await_update(tries=10, rest_dt=0.01)

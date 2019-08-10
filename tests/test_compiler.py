@@ -3,22 +3,12 @@ import os
 import pytest
 
 from cmaker.compiler import Compiler
+from tests.mock_fout import MockFout
 
 CMD = "python3 -c \"print({inp}, '{out}')\""
 CMD2 = "python3 -c \"print({inp}, '{out}'); assert False\""
 DIR = "temp"
 OUT = os.path.join(DIR, "temp.txt")
-
-class MockFout:
-    
-    def __init__(self):
-        self.record = []
-    
-    def write(self, s):
-        self.record.append(s.rstrip())
-    
-    def flush(self):
-        return
 
 @pytest.fixture
 def fout():

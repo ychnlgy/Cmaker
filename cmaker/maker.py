@@ -1,4 +1,5 @@
 import os
+import sys
 
 from .config import Config
 from .compiler import Compiler
@@ -10,12 +11,12 @@ from .srcfile import SrcFile
 
 class Maker:
     
-    def __init__(self, config_path):
+    def __init__(self, config_path, fout=sys.stdout):
         self.config = Config.parse(config_path)
         self.fcentral = FCentral()
         self.dcentral = DCentral(self.fcentral)
-        self.compiler = Compiler(self.config.compile_cmd)
-        self.combiner = Compiler(self.config.combine_cmd)
+        self.compiler = Compiler(self.config.compile_cmd, fout)
+        self.combiner = Compiler(self.config.combine_cmd, fout)
     
     def make(self, fpath, opath):
         srcfile = self._create_src(fpath)
@@ -33,6 +34,7 @@ class Maker:
                 obj_paths = [mfile.fpath for mfile in obj_mfiles]
                 inp = " ".join(obj_paths)
                 self.combiner.compile(inp=inp, out=opath)
+                final_mfile.await_update()
     
     # === PRIVATE ===
     
@@ -41,5 +43,5 @@ class Maker:
             self.fcentral, 
             self.dcentral, 
             self.config, 
-            self.fcentral[fpath]
+            fpath
         )
