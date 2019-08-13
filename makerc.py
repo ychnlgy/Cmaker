@@ -14,5 +14,3 @@ if __name__ == "__main__":
     
     maker = Maker(args.config)
     maker.make(args.input, args.output)
-
-    print("Done.")

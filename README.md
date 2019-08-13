@@ -28,7 +28,7 @@ maker.make("<main>.cpp", "<out>")
 
 ### Custom arguments
 
-Copy the following contents of the configuration file into a file in the working directory:
+Copy the following contents of the configuration file into `cmaker.config` in the working directory:
 
 ```config
 c_ext = .cpp
@@ -38,8 +38,4 @@ compile_cmd = g++ -MMD --coverage -c {inp} -o {out}
 combine_cmd = g++ -MMD --coverage {inp} -o {out}
 ```
 
-Change whatever your heart desires (but you MUST include the `-MMD` option for `g++` to produce dependency files), then specify this file to the program. If this file is named "makerc.config":
-
-```bash
-makerc.py --input main.cpp --output app.exe --config makerc.config
-```
+Change whatever your heart desires, but you MUST include the `-MMD` option for `g++` to produce dependency files.
