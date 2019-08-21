@@ -11,6 +11,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     from cmaker.maker import Maker
+    from cmaker.compiler import Compiler
     
     maker = Maker(args.config)
-    maker.make(args.input, args.output)
+    
+    try:
+        maker.make(args.input, args.output)
+    except Compiler.Error:
+        raise SystemExit("ERROR: Early termination.")
