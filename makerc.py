@@ -5,9 +5,10 @@ if __name__ == "__main__":
     import argparse
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--output", required=True)
+    parser.add_argument("--input")
+    parser.add_argument("--output")
     parser.add_argument("--config", default="cmaker.config")
+    parser.add_argument("--init", type=int, default=0)
     args = parser.parse_args()
     
     from cmaker.maker import Maker
@@ -15,7 +16,13 @@ if __name__ == "__main__":
     
     maker = Maker(args.config)
     
-    try:
-        maker.make(args.input, args.output)
-    except Compiler.Error:
-        raise SystemExit("ERROR: Early termination.")
+    if args.init:
+        maker.config.write(args.config)
+    else:
+        if args.input is None or args.output is None:
+            raise SystemExit("ERROR: Provide inputs and outputs.")
+        else:
+            try:
+                maker.make(args.input, args.output)
+            except Compiler.Error:
+                raise SystemExit("ERROR: Early termination.")

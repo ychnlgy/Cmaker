@@ -12,6 +12,16 @@ class Config:
                         k, v = line.split("=")
                         kwargs[k.strip()] = v.strip()
         return Config(**kwargs)
+
+    def write(self, fpath):
+        data = "\n".join([
+            " = ".join(item)
+            for item in vars(self).items()
+        ])
+        with open(fpath, "w") as f:
+            os.fsync(f.fileno())
+            f.write(data)
+            f.flush()
     
     def __init__(
         self,
