@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="cmaker",
-    version="0.0.4",
+    version="0.0.5",
     description="Recursive make-operation for sprawling C++ projects.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",

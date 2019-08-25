@@ -22,7 +22,7 @@ def test_parse():
     assert config.obj_dirsep == "."
     assert (
         config.combine_cmd ==
-        "g++ -MMD --coverage -I../ {inp} -o {out}"
+        "g++ -MMD -std=c++98 --coverage -I../ {inp} -o {out}"
     )
 
 def test_write(temp):

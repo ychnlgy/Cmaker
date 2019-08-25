@@ -9,7 +9,10 @@ class Config:
             with open(fpath, "r") as f:
                 for line in map(str.strip, f):
                     if line and line[0] != "#":
-                        k, v = line.split("=")
+                        parts = line.split("=")
+                        assert len(parts) > 1
+                        k = parts[0]
+                        v = "=".join(parts[1:])
                         kwargs[k.strip()] = v.strip()
         return Config(**kwargs)
 
