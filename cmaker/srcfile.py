@@ -13,7 +13,10 @@ class SrcFile:
         base = os.path.splitext(fpath)[0]
         h_mfile = fcentral[base + H_EXT]
         src_mfile = fcentral[base + config.c_ext]
-        obj_name = base.replace("/", config.obj_dirsep).replace("\\", config.obj_dirsep)
+        obj_correct = base.replace(".", "_")
+        obj_name = obj_correct.replace(
+            "/", config.obj_dirsep
+        ).replace("\\", config.obj_dirsep)
         obj_base = os.path.join(config.obj_dir, obj_name)
         obj_mfile = fcentral[obj_base + O_EXT]
         dep_mfile = fcentral[obj_base + D_EXT]
